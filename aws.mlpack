@@ -1,5 +1,5 @@
 # OASIS_START
-# DO NOT EDIT (digest: 930e8cdd614e60d5473e025ac48c4961)
+# DO NOT EDIT (digest: 3a9fb657adfa7c89fdea616917511ba6)
 Auth
 Dynamodb
 Auth_cn_req
@@ -8,4 +8,10 @@ Auth_date
 Auth_s
 Sign
 Request
+Dynamodb_base_t
+Dynamodb_base_j
+Dynamodb_getitem_t
+Dynamodb_getitem_j
+Dynamodb_createtable_t
+Dynamodb_createtable_j
 # OASIS_STOP

@@ -1,0 +1,51 @@
+type attribute_name <ocaml from="Dynamodb_base"> = abstract
+type attribute_type <ocaml from="Dynamodb_base"> = abstract
+
+type attribute_definition =
+    {attr_name <json name="AttributeName">: string;
+     attr_type <json name="AttributeType">: attribute_type}
+
+type projection_type = [
+  KEYS_ONLY
+ | INCLUDE
+ | ALL
+]
+
+type projection =
+    {non_key_attributes <json name="NonKeyAttributes">: attribute_name list;
+     projection_type <json name="ProjectionType">: projection_type}
+
+type provisioned_throughput =
+    {read_capacity_units <json name="ReadCapacityUnits">: int;
+     write_capacity_units <json name="WriteCapacityUnits">: int}
+
+type key_type = [
+   HASH
+  | RANGE
+]
+type schema_entry = {schema_name <json name="AttributeName">: string;
+                     key_type <json name="KeyType">: key_type}
+
+type global_secondary_index =
+    {gsi_name <json name="IndexName">: string;
+     gsi_key_schema <json name="KeySchema">: schema_entry list;
+     gsi_projection <json name="Projection">: projection;
+     gsi_provisioned_throughput <json name="ProvisionedThroughput">:
+       provisioned_throughput}
+
+type local_secondary_index =
+    {lsi_name <json name="IndexName">: string;
+     lsi_skey_schema <json name="KeySchema">: schema_entry list;
+     lsi_projection <json name="Projection">: projection}
+
+type table =
+    {name <json name="TableName">: string;
+     attribute_definitions <json name="AttributeDefinitions">:
+       attribute_definition list;
+     global_secondary_indexes <json name="GlobalSecondaryIndexes">:
+       global_secondary_index list;
+     key_schema <json name="KeySchema">: schema_entry list;
+     local_secondary_indexes <json name="LocalSecondaryIndexes">:
+       local_secondary_index list;
+     provisioned_throughput <json name="ProvisionedThroughput">:
+       provisioned_throughput}

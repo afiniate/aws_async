@@ -3,6 +3,11 @@ open Async.Std
 
 type headers = (string * string) list
 
+let sexp_of_response (resp, str_body) =
+  Sexp.List [Sexp.Atom (Cohttp.Code.string_of_status
+                          (Cohttp.Response.status resp));
+             Sexp.Atom str_body]
+
 let post auth service headers body url =
   let body_len = String.length body in
   let headers' = ("content-type", "application/x-amz-json-1.0")::
