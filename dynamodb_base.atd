@@ -1,7 +1,0 @@
-type attribute_name = string
-
-type attribute_type = [
-  String <json name="S">
-  | Number <json name="N">
-  | Binary <json name="B">
-]
