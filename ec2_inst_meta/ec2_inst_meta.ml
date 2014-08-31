@@ -3,15 +3,14 @@ open Async.Std
 
 type error_code =
   | Unavailable_region
-  | Unavailable_role with sexp
+  | Unavailable_role
+  | Unavailable_user_data with sexp
 
 exception Err of error_code * String.t  with sexp
 
-let role_url = "http://169.254.169.254/latest/meta-data/iam/security-credentials/"
-
-let availability_zone =
-  Uri.of_string
-    "http://169.254.169.254/latest/meta-data/placement/availability-zone"
+let uri_of_path path =
+  let base_url = "http://169.254.169.254/latest" in
+  Uri.of_string (base_url ^ path)
 
 let get_availability_zone () =
   (* The zone is the region name + a one character zone idenifier. We
@@ -19,7 +18,8 @@ let get_availability_zone () =
   if there are ever more than 26 zones and AWS starts using more
   letters. However, when that happens we can switch to regexp. *)
   let open Deferred.Monad_infix in
-  Cohttp_async.Client.get availability_zone
+  let path = "/meta-data/placement/availability-zone" in
+  Cohttp_async.Client.get (uri_of_path path)
   >>= fun (resp, body) ->
   Cohttp_async.Body.to_string body
   >>= fun str_body ->
@@ -40,13 +40,10 @@ let get_region () =
   >>= fun av_zone ->
   return @@ Ok (parse_region_from_zone av_zone)
 
-let make_role_endpoint role_name =
-  Uri.of_string @@ role_url ^ role_name
-
 let get_role role_name =
   let open Deferred.Monad_infix in
-  let endpoint = make_role_endpoint role_name in
-  Cohttp_async.Client.get endpoint
+  let path = "/meta-data/iam/security-credentials/" ^ role_name in
+  Cohttp_async.Client.get (uri_of_path path)
   >>= fun (resp, body) ->
   Cohttp_async.Body.to_string body
   >>= fun str_body ->
@@ -58,3 +55,19 @@ let get_role role_name =
                        (Unavailable_role,
                         (Sexp.to_string
                            (Cohttp.Code.sexp_of_status_code status))))
+
+let get_user_data () =
+  let open Deferred.Monad_infix in
+  let path = "/user-data" in
+  Cohttp_async.Client.get (uri_of_path path)
+  >>= fun (resp, body) ->
+  let status = Cohttp.Response.status resp in
+  Cohttp_async.Body.to_string body
+  >>= fun response ->
+  if `OK = status then
+    return @@ Ok response
+  else
+    return @@ Error (Err
+                      (Unavailable_user_data,
+                       (Sexp.to_string
+                          (Cohttp.Code.sexp_of_status_code status))))
