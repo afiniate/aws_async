@@ -1,0 +1,6 @@
+type describe_table = {table_name <json name="TableName">: string}
+
+type table_description <ocaml module="Ddb_base_j"> = abstract
+
+type result =
+    {table <json name="Table">: table_description}

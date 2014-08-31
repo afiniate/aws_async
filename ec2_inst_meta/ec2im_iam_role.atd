@@ -1,0 +1,7 @@
+type desc = {code <json name="Code">: string;
+             last_updated <json name="LastUpdated">: string;
+             signature_type <json name="Type">: string;
+             access_key_id <json name="AccessKeyId">: string;
+             secret_access_key <json name="SecretAccessKey">: string;
+             token <json name="Token">: string;
+             expiration <json name="Expiration">: string}

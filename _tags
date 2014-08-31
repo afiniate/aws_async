@@ -1,0 +1,6 @@
+<*.atd>: std_json
+
+<auth>: include
+<dynamodb>: include
+<sqs>: include
+<ec2_inst_meta>: include

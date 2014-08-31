@@ -1,0 +1,71 @@
+type effect = [
+  | Allow
+  | Deny
+]
+
+type principle = {
+  aws <json name="AWS">: string list
+}
+
+type key = [
+  | Current_time <json name="aws:CurrentTime">
+  | Epoch_time <json name="aws:EpochTime">
+  | Multi_factor_auth_age <json name="aws:MultiFactorAuthAge">
+  | Principle_type <json name="aws:principaltype">
+  | Secure_transport <json name="aws:SecureTransport">
+  | Source_arn <json name="aws:SourceArn">
+  | Source_ip <json name="aws:SourceIp">
+  | User_agent <json name="aws:UserAgent">
+  | User_id <json name="aws:userid">
+  | Username <json name="aws:username">
+]
+
+type conditional = [
+  | String_equals <json name="StringEquals">
+  | String_not_equals <json name="StringNotEquals">
+  | String_equals_ignore_case <json name="StringEqualsIgnoreCase">
+  | String_not_equals_ignore_case <json name="StringNotEqualsIgnoreCase">
+  | String_like <json name="StringLike">
+  | String_not_like <json name="StringNotLike">
+  | Numeric_equals <json name="NumericEquals">
+  | Numeric_not_equals <json name="NumericNotEquals">
+  | Numeric_less_than <json name="NumericLessThan">
+  | Numeric_less_than_equals <json name="NumericLessThanEquals">
+  | Numeric_greater_than <json name="NumericGreaterThan">
+  | Numeric_greater_than_equals <json name="NumericGreaterThanEquals">
+  | Date_equals <json name="DateEquals">
+  | Date_not_equals <json name="DateNotEquals">
+  | Date_less_than <json name="DateLessThan">
+  | Date_less_than_equals <json name="DateLessThanEquals">
+  | Date_greater_than <json name="DateGreaterThan">
+  | Date_greater_than_equals <json name="DateGreaterThanEquals">
+  | Bool <json name="Bool">
+  | Ip_address <json name="IpAddress">
+  | Not_ip_address <json name="NotIpAddress">
+  | Arn_equals <json name="ArnEquals">
+  | Arn_not_equals <json name="ArnNotEquals">
+  | Arn_like <json name="ArnLike">
+  | Arn_not_like <json name="ArnNotLike">
+  | Null <json name="Null">
+]
+
+type condition_body = (string * string list) list <json repr="object">
+
+type condition = (string * condition_body) list <json repr="object">
+
+type statement = {
+  ?sid <json name="Sid">: string option;
+  effect <json name="Effect">: effect;
+  principle <json name="Principle">: principle;
+  ?not_principle <json name="NotPrinciple">: principle option;
+  action <json name="Action">: string list;
+  ?not_action <json name="NotAction">: string list option;
+  resource <json name="Resource">: string;
+  condition <json name="Condition">: condition
+}
+
+type policy = {
+  version <json name="Version">: string;
+  id <json name="Id">: string;
+  statement <json name="Statement">: statement list
+}

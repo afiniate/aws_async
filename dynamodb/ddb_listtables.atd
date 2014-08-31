@@ -1,0 +1,8 @@
+type list_tables =
+    {?exclusive_start_table_name <json name="ExclusiveStartTableName">: string option;
+     ?limit <json name="Limit">: int option}
+
+
+type result =
+    {?last_evaluated_table_name <json name="LastEvaluatedTableName">: string option;
+     table_names <json name="TableNames">: string list}

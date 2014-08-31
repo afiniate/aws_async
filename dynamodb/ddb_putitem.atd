@@ -1,0 +1,66 @@
+type return_consumed_capacity = [
+  INDEXES
+  | TOTAL
+  | NONE
+]
+
+type return_collection_metrics = [
+  SIZE
+  | NONE
+]
+
+type return_values = [
+  NONE
+  | ALL_OLD
+  | UPDATED_OLD
+  | ALL_NEW
+  | UPDATED_NEW
+]
+
+type attribute <ocaml module="Ddb_base_j"> = abstract
+
+type attributes = (string * attribute) list <json repr="object">
+
+type index_capacity_unit = { capacity_units <json name="CapacityUnits">: float }
+type index_capacity_units = (string * index_capacity_unit) list <json repr="object">
+
+type consumed_capacity = {
+  capacity_units <json name="CapacityUnits">: float;
+  ?global_secondary_indexes <json name="GlobalSecondaryIndexes">:
+    index_capacity_units option;
+  ?local_secondary_indexes <json name="LocalSecondaryIndexes">:
+    index_capacity_units option;
+  table_capacity <json name="Table">: index_capacity_unit;
+  table_name <json name="TableName">: string;
+}
+
+type value = {
+  ?exists <json name="Exists">: bool option;
+  ?value <json name="Value">: attribute option;
+}
+
+type expected = (string * value) list <json repr="object">
+type item = (string * attribute) list <json repr="object">
+
+type put_item = {
+  ?expected <json name="Expected">: expected option;
+  item <json name="Item">: item;
+  ?return_consumed_capacity <json name="ReturnConsumedCapacity">:
+    return_consumed_capacity option;
+  ?return_collection_metrics <json name="ReturnCollectionMetrics">:
+    return_collection_metrics option;
+  ?return_values <json name="ReturnValues">:
+    return_values option;
+  table_name <json name="TableName">: string
+}
+
+type item_collection_metrics = {
+  item_collection_key <json name="ItemCollectionKey">: attributes;
+  size_estimate_range_gb <json name="SizeEstimateRangeGB">: int list;
+}
+
+type result = {
+  ?attributes <json name="Attributes">: attributes option;
+  ?consumed_capacity <json name="ConsumedCapacity">: consumed_capacity option;
+  ?item_collection_metrics <json name="ItemCollectionMetrics">: item_collection_metrics option;
+}

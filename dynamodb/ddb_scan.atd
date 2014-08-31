@@ -1,0 +1,85 @@
+type attribute_name = string
+
+type attribute <ocaml module="Ddb_base_j"> = abstract
+
+type conditional_operator = [
+    AND
+  | OR
+]
+
+type exclusive_start_key = (string * attribute) list <json repr="object">
+
+type comparison_operator = [
+    EQ
+  | NE
+  | LE
+  | LT
+  | GE
+  | GT
+  | NOT_NULL
+  | NULL
+  | CONTAINS
+  | NOT_CONTAINS
+  | BEGINS_WITH
+  | BETWEEN
+]
+
+type scan_filter = {attribute_value_list
+                      <json name="AttributeValueList">:
+                        attribute list;
+                      comparison_operator
+                      <json name="ComparisonOperator">:
+                        comparison_operator;}
+
+type scan_filters = (string * scan_filter) list <json repr="object">
+
+type return_consumed_capacity = [
+  INDEXES
+  | TOTAL
+  | NONE
+]
+
+type select = [
+    ALL_ATTRIBUTES
+  | ALL_PROJECTED_ATTRIBUTES
+  | SPECIFIC_ATTRIBUTES
+  | COUNT
+]
+
+type scan = {
+  ?attributes <json name="AttributesToGet">: attribute_name list option;
+  ?conditional_operator <json name="ConditionalOperator">: conditional_operator option;
+  ?exclusive_start_key <json name="ExclusiveStartKey">:
+    exclusive_start_key option;
+  ?limit <json name="Limit">: int option;
+  ?return_consumed_capacity <json name="ReturnConsumedCapacity">:
+    return_consumed_capacity option;
+  ?scan_filter <json name="ScanFilter">: scan_filters option;
+  ?segment <json name="Segment">: int option;
+  ?select <json name="Select">: select option;
+  ?total_segments <json name="TotalSegments">: int option;
+  table_name <json name="TableName">: string;
+}
+
+type index_capacity_unit = { capacity_units <json name="CapacityUnits">: float }
+type index_capacity_units = (string * index_capacity_unit) list <json repr="object">
+
+type consumed_capacity = {
+  capacity_units <json name="CapacityUnits">: float;
+  ?global_secondary_indexes <json name="GlobalSecondaryIndexes">:
+    index_capacity_units option;
+  ?local_secondary_indexes <json name="LocalSecondaryIndexes">:
+    index_capacity_units option;
+  table_capacity <json name="Table">: index_capacity_unit;
+  table_name <json name="TableName">: string;
+}
+
+type attributes = (string * attribute) list <json repr="object">
+
+type result = {
+  ?consumed_capacity <json name="ConsumedCapacity">: consumed_capacity option;
+  count <json name="Count">: int;
+  items <json name="Items">: attributes list;
+  ?last_evaluated_key <json name="LastEvaluatedKey">: attributes option;
+  scanned_count <json name="ScannedCount">: int;
+}

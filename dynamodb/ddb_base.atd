@@ -1,0 +1,104 @@
+type attribute_name = string
+
+type attribute = {
+  ?b <json name="B">: string option;
+  ?bs <json name="BS">: string list option;
+  ?s <json name="S">: string option;
+  ?ss  <json name="SS">: string list option;
+  ?n <json name="N">: string option;
+  ?ns <json name="NS">: string list option
+}
+
+type attribute_type = [
+   S
+  | N
+  | B
+]
+
+type attribute_definition =
+    {attr_name <json name="AttributeName">: string;
+     attr_type <json name="AttributeType">: attribute_type}
+
+type projection_type = [
+  KEYS_ONLY
+ | INCLUDE
+ | ALL
+]
+
+type projection =
+    {?non_key_attributes <json name="NonKeyAttributes">: attribute_name list option;
+     projection_type <json name="ProjectionType">: projection_type}
+
+type provisioned_throughput =
+    {read_capacity_units <json name="ReadCapacityUnits">: int;
+     write_capacity_units <json name="WriteCapacityUnits">: int}
+
+type key_type = [
+  HASH
+  | RANGE
+]
+type schema_entry = {schema_name <json name="AttributeName">: string;
+                     key_type <json name="KeyType">: key_type}
+
+type global_secondary_index =
+    {gsi_name <json name="IndexName">: string;
+     gsi_key_schema <json name="KeySchema">: schema_entry list;
+     gsi_projection <json name="Projection">: projection;
+     gsi_provisioned_throughput <json name="ProvisionedThroughput">:
+       provisioned_throughput}
+
+type local_secondary_index =
+    {lsi_name <json name="IndexName">: string;
+     lsi_key_schema <json name="KeySchema">: schema_entry list;
+     lsi_projection <json name="Projection">: projection}
+
+type table_status = [
+    CREATING
+  | UPDATING
+  | DELETING
+  | ACTIVE
+]
+
+type global_secondary_index_description =
+    {gsid_name <json name="IndexName">: string;
+     gsid_index_size_bytes <json name="IndexSizeBytes">: int;
+     gsid_index_status <json name="IndexStatus">: table_status;
+     gsid_item_count <json name="ItemCount">: int;
+     gsid_key_schema <json name="KeySchema">: schema_entry list;
+     gsid_projection <json name="Projection">: projection;
+     gsid_provisioned_throughput <json name="ProvisionedThroughput">:
+       provisioned_throughput_description}
+
+type local_secondary_index_description =
+    {lsid_name <json name="IndexName">: string;
+     lsid_key_schema <json name="KeySchema">: schema_entry list;
+     lsid_projection <json name="Projection">: projection;
+     lsid_index_size_bytes <json name="IndexSizeBytes">: int;
+     lsid_item_count <json name="ItemCount">: int;}
+
+type provisioned_throughput_description =
+    {?last_decrease_datetime <json name="LastDecreaseDateTime">: float option;
+     ?last_increase_datetime <json name="LastIncreaseDateTime">: float option;
+     ?number_of_decreases_today <json name="NumberOfDecreasesToday">: int option;
+     ?read_capacity_units <json name="ReadCapacityUnits">: int option;
+     ?write_capacity_units <json name="WriteCapacityUnits">: int option}
+
+type table_description =
+    { ?attribute_definitions <json name="AttributeDefinitions">:
+        attribute_definition list option;
+      ?creation_datetime <json name="CreationDateTime">: float option;
+      ?global_secondary_indexes <json name="GlobalSecondaryIndexes">:
+        global_secondary_index_description list option;
+      ?item_count <json name="ItemCount">: int option;
+      ?key_schema <json name="KeySchema">: schema_entry list option;
+      ?local_secondary_indexes <json name="LocalSecondaryIndexes">:
+        local_secondary_index_description list option;
+      ?provisioned_throughput <json name="ProvisionedThroughput">:
+        provisioned_throughput_description option;
+      ?table_name <json name="TableName">: string option;
+      ?table_size_bytes <json name="TableSizeBytes">: int option;
+      ?table_status <json name="TableStatus">: table_status option}
+
+type error = {code <json name="__type">: string;
+              ?message1 <json name="Message">: string option;
+              ?message2 <json name="message">: string option}

@@ -1,0 +1,29 @@
+type attribute_name = string
+
+type attribute_definition <ocaml module="Ddb_base_j"> = abstract
+
+type provisioned_throughput <ocaml module="Ddb_base_j"> = abstract
+
+type schema_entry <ocaml module="Ddb_base_j"> = abstract
+
+type global_secondary_index <ocaml module="Ddb_base_j"> = abstract
+
+type local_secondary_index <ocaml module="Ddb_base_j"> = abstract
+
+type table =
+    {name <json name="TableName">: string;
+     attribute_definitions <json name="AttributeDefinitions">:
+       attribute_definition list;
+     ?global_secondary_indexes <json name="GlobalSecondaryIndexes">:
+       global_secondary_index list option;
+     key_schema <json name="KeySchema">: schema_entry list;
+     ?local_secondary_indexes <json name="LocalSecondaryIndexes">:
+       local_secondary_index list option;
+     provisioned_throughput <json name="ProvisionedThroughput">:
+       provisioned_throughput}
+
+type table_description <ocaml module="Ddb_base_j
+"> = abstract
+
+type result =
+    {table_description <json name="TableDescription">: table_description}
