@@ -57,7 +57,7 @@ val int: Int.t -> attribute_value
 val int_set: Int.t List.t -> attribute_value
 
 val get_string_set: String.t -> item ->
-                    (String.t List.t, Exn.t) Result.t
+  (String.t List.t, Exn.t) Result.t
 val get_string: String.t -> item  -> (String.t, Exn.t) Result.t
 val get_float_set: String.t -> item  -> (Float.t List.t, Exn.t) Result.t
 val get_float: String.t -> item  -> (Float.t, Exn.t) Result.t
@@ -71,4 +71,4 @@ val t_of_credentials: ?url:String.t -> String.t -> String.t -> String.t -> t
 val t_of_role: ?url:String.t -> String.t -> (t, Exn.t) Deferred.Result.t
 (**
  * create a dynamodb system from an IAM role and region
- *)
+*)

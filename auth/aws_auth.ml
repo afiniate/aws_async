@@ -21,34 +21,34 @@ let string_to_sign sys request_date service httpMethod uri headers body =
     Awsa_cn_req.signature httpMethod uri headers body in
   let date = Awsa_date.to_basic_string request_date in
   let sts = Awsa_sign.algo ^ "\n" ^
-              date ^ "\n" ^
-                (credential_scope_value
-                   sys request_date service) ^ "\n" ^
-                  request_sig in
+            date ^ "\n" ^
+            (credential_scope_value
+               sys request_date service) ^ "\n" ^
+            request_sig in
   (signed_headers, sts)
 
 let sign_request sys request_date service
-                 httpMethod uri headers body =
+    httpMethod uri headers body =
   let (signed_headers, ss) = string_to_sign sys request_date service
-                                            httpMethod uri headers body in
+      httpMethod uri headers body in
   let key = signing_key sys request_date service in
   (signed_headers, (Awsa_sign.sign_encode key ss))
 
 let create_credentials sys request_date service =
   sys.Awsa_base.access_key_id ^ "/" ^ (credential_scope_value sys
-                                                              request_date
-                                                              service)
+                                         request_date
+                                         service)
 let base_uri = Uri.of_string ""
 
 let add_token sys headers =
   match sys.Awsa_base.token with
   | Some token ->
-     ("x-amz-security-token", token)::headers
+    ("x-amz-security-token", token)::headers
   | None ->
-     headers
+    headers
 
 let v4_authorize sys ?region service httpMethod uri
-                 raw_headers body =
+    raw_headers body =
   let open Deferred.Result.Monad_infix in
   Awsa_creds.resolve ?region sys
   >>= fun (sys', creds) ->
@@ -56,17 +56,17 @@ let v4_authorize sys ?region service httpMethod uri
   let (request_date, raw_headers, norm_headers) =
     Awsa_headers.process uri @@ add_token creds raw_headers in
   let (signed_headers, signature) = sign_request creds request_date
-                                                 service httpMethod
-                                                 resolved_uri
-                                                 norm_headers
-                                                 body in
+      service httpMethod
+      resolved_uri
+      norm_headers
+      body in
   let credentials = create_credentials creds request_date service in
   return @@ Ok (sys',
                 (List.append raw_headers
-                             [("Authorization",
-                               Awsa_sign.algo ^ " Credential=" ^ credentials ^
-                                 ", SignedHeaders=" ^ signed_headers ^
-                                   ", Signature=" ^ signature)]))
+                   [("Authorization",
+                     Awsa_sign.algo ^ " Credential=" ^ credentials ^
+                     ", SignedHeaders=" ^ signed_headers ^
+                     ", Signature=" ^ signature)]))
 
 let t_of_credentials access_key_id secret_access_key default_region =
   Awsa_base.Creds {Awsa_base.secret_access_key = secret_access_key;

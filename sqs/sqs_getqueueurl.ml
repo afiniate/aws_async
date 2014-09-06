@@ -23,20 +23,20 @@ let parse_result xml_string =
   Ok {queue_url = Uri.of_string url; request_id = request_id}
 
 let exec sys
-         ?queue_owner_aws_account_id
-         name =
+    ?queue_owner_aws_account_id
+    name =
   let uri = sys.Sqs_system.url
             |> Sqs_util.add_standard_param ~name:"QueueName"
-                                           ~value:name
+              ~value:name
             |> Sqs_util.add_standard_param ~name:"Action"
-                                           ~value:"GetQueueUrl"
+              ~value:"GetQueueUrl"
             |> Sqs_util.add_param ~name:"QueueOwnerAWSAccountId"
-                                  ~converter:Sqs_util.convert_string
-                                  ~value:queue_owner_aws_account_id in
+              ~converter:Sqs_util.convert_string
+              ~value:queue_owner_aws_account_id in
   Sqs_request.get sys.auth "" uri
   >>= fun (auth, body) ->
   match parse_result body with
   | Ok response ->
-     return @@ Ok ({sys with auth}, response)
+    return @@ Ok ({sys with auth}, response)
   | Error err ->
-     return @@ Result.fail err
+    return @@ Result.fail err

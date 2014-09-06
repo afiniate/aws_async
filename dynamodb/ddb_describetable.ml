@@ -2,10 +2,10 @@ open Core.Std
 open Async.Std
 
 let exec sys
-         table_name =
+    table_name =
   let request_spec = Ddb_system.api_version ^ ".DescribeTable" in
   let json = Ddb_describetable_j.string_of_describe_table
-               {Ddb_describetable_t.table_name = table_name} in
+      {Ddb_describetable_t.table_name = table_name} in
   let open Deferred.Result in
   (Ddb_request.post
      sys.Ddb_system.auth

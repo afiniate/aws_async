@@ -27,7 +27,7 @@ let service = "sqs"
 let make_url region url =
   match url with
   | None -> Uri.of_string ("http://sqs." ^
-                             region ^ ".amazonaws.com")
+                           region ^ ".amazonaws.com")
   | Some new_url -> Uri.of_string new_url
 
 let t_of_credentials ?url access_id secret_key region =

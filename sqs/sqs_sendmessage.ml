@@ -26,29 +26,29 @@ let parse_result xml_string =
   Ok {message_md5 = md5; message_id = id; request_id = id}
 
 let exec sys
-         ?delay_seconds
-         ~queue_url
-         message_body =
+    ?delay_seconds
+    ~queue_url
+    message_body =
   let uri = queue_url
             |> Sqs_util.add_standard_param ~name:"Action"
-                                           ~value:"SendMessage"
+              ~value:"SendMessage"
             |> Sqs_util.add_standard_param ~name:"MessageBody"
-                                           ~value:(Sqs_util.encode_message_body message_body)
+              ~value:(Sqs_util.encode_message_body message_body)
             |> Sqs_util.add_param ~name:"DelaySeconds"
-                                  ~converter:Int.to_string
-                                  ~value:delay_seconds in
+              ~converter:Int.to_string
+              ~value:delay_seconds in
   Sqs_request.get sys.Sqs_system.auth "" uri
   >>= fun (auth, body) ->
   match parse_result body with
   | Ok response ->
-     return @@ Ok ({sys with auth}, response)
+    return @@ Ok ({sys with auth}, response)
   | Error err ->
-     return @@ Result.fail err
+    return @@ Result.fail err
 
 let name_exec sys
-              ?delay_seconds
-              ~queue_name
-              message_body =
+    ?delay_seconds
+    ~queue_name
+    message_body =
   Sqs_getqueueurl.exec sys queue_name
   >>= fun (sys', {Sqs_getqueueurl.queue_url = queue_url}) ->
   exec sys' ?delay_seconds ~queue_url message_body

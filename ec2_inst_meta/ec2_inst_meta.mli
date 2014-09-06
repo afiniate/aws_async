@@ -3,7 +3,7 @@ open Async.Std
 
 (**
  * This module provides access to the instance metadata of an ec2 instance.
- *)
+*)
 
 val get_availability_zone: Unit.t -> (String.t, Exn.t) Deferred.Result.t
 (** Get the availability zone from the instance metadata *)

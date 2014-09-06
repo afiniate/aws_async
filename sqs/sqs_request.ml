@@ -52,11 +52,11 @@ let get_with_headers body url (auth, authed_headers) =
   else
     match parse_error str_body with
     | Ok error ->
-       return @@ Error (Sqs_system.Error
-                          (Sqs_system.Service_error error,
-                           "Sqs system error"))
+      return @@ Error (Sqs_system.Error
+                         (Sqs_system.Service_error error,
+                          "Sqs system error"))
     | Error err ->
-       return @@ Error err
+      return @@ Error err
 
 
 let get auth body url =

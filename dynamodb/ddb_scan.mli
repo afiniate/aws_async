@@ -22,25 +22,25 @@ type filter =
   | Or of (String.t * condition) List.t
 
 val exec: Ddb_system.t ->
-          ?attributes: Ddb_scan_t.attribute_name List.t ->
-          ?exclusive_start_key: keys ->
-          ?limit: Int.t ->
-          ?return_consumed_capacity: Ddb_scan_t.return_consumed_capacity ->
-          ?filter: filter ->
-          ?segment: Int.t ->
-          ?total_segments: Int.t ->
-          ?select: Ddb_scan_t.select ->
-          String.t ->
-          (Ddb_system.t * Ddb_scan_t.result, Exn.t) Deferred.Result.t
+  ?attributes: Ddb_scan_t.attribute_name List.t ->
+  ?exclusive_start_key: keys ->
+  ?limit: Int.t ->
+  ?return_consumed_capacity: Ddb_scan_t.return_consumed_capacity ->
+  ?filter: filter ->
+  ?segment: Int.t ->
+  ?total_segments: Int.t ->
+  ?select: Ddb_scan_t.select ->
+  String.t ->
+  (Ddb_system.t * Ddb_scan_t.result, Exn.t) Deferred.Result.t
 
 
 val all: Ddb_system.t ->
-         ?attributes: Ddb_scan_t.attribute_name List.t ->
-         ?exclusive_start_key: keys ->
-         ?limit: Int.t ->
-         ?return_consumed_capacity: Ddb_scan_t.return_consumed_capacity ->
-         ?segment: Int.t ->
-         ?total_segments: Int.t ->
-         ?select: Ddb_scan_t.select ->
-         String.t ->
-         (Ddb_system.t * Ddb_scan_t.result, Exn.t) Deferred.Result.t
+  ?attributes: Ddb_scan_t.attribute_name List.t ->
+  ?exclusive_start_key: keys ->
+  ?limit: Int.t ->
+  ?return_consumed_capacity: Ddb_scan_t.return_consumed_capacity ->
+  ?segment: Int.t ->
+  ?total_segments: Int.t ->
+  ?select: Ddb_scan_t.select ->
+  String.t ->
+  (Ddb_system.t * Ddb_scan_t.result, Exn.t) Deferred.Result.t

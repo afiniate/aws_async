@@ -80,89 +80,88 @@ let invalid_field field =
                          "Invalid field: " ^ field))
 
 let try_with field fn =
-    try
-      Ok (fn ())
-    with
-      _ -> Core.Std.Error (Error (Invalid_field field,
-                                  "Conversion error: " ^ field))
+  try
+    Ok (fn ())
+  with
+    _ -> Core.Std.Error (Error (Invalid_field field,
+                                "Conversion error: " ^ field))
 
 let get_string_set field item =
   match List.Assoc.find item field with
   | Some {Ddb_base_t.ss=Some s} -> Ok s
   | Some {ss=None} ->
-     invalid_field field
+    invalid_field field
   | None ->
-     invalid_field field
+    invalid_field field
 
 let get_string field item =
   match List.Assoc.find item field with
   | Some {Ddb_base_t.s=Some s} -> Ok s
   | Some {s=None} ->
-     invalid_field field
+    invalid_field field
   | None ->
-     invalid_field field
+    invalid_field field
 
 let get_float_set field item =
   match List.Assoc.find item field with
   | Some {Ddb_base_t.ns=Some ns} ->
-     try_with field (fun () ->
-                     List.map
-                       ~f:(fun x -> Float.of_string x) ns)
+    try_with field (fun () ->
+        List.map
+          ~f:(fun x -> Float.of_string x) ns)
   | Some {ns=None} ->
-     invalid_field field
+    invalid_field field
   | None ->
-     invalid_field field
+    invalid_field field
 
 let get_float field item =
   match List.Assoc.find item field with
   | Some {Ddb_base_t.n=Some n} ->
-     try_with field (fun () ->
-                     Float.of_string n)
+    try_with field (fun () ->
+        Float.of_string n)
   | Some {n=None} ->
-     invalid_field field
+    invalid_field field
   | None ->
-     invalid_field field
+    invalid_field field
 
 let get_int_set field item =
   match List.Assoc.find item field with
   | Some {Ddb_base_t.ns=Some ns} ->
-     try_with field (fun () ->
-                     List.map
-                       ~f:(fun x -> Int.of_string x) ns)
+    try_with field (fun () ->
+        List.map
+          ~f:(fun x -> Int.of_string x) ns)
   | Some {ns=None} ->
-     invalid_field field
+    invalid_field field
   | None ->
-     invalid_field field
+    invalid_field field
 
 let get_int field item =
   match List.Assoc.find item field with
   | Some {Ddb_base_t.n=Some n} ->
-     try_with field (fun () -> Int.of_string n)
+    try_with field (fun () -> Int.of_string n)
   | Some {n=None} ->
-     invalid_field field
+    invalid_field field
   | None ->
-     invalid_field field
-
+    invalid_field field
 
 let get_binary_set field item =
   match List.Assoc.find item field with
   | Some {Ddb_base_t.bs=Some bin} -> Ok bin
   | Some {bs=None} ->
-     invalid_field field
+    invalid_field field
   | None ->
-     invalid_field field
+    invalid_field field
 
 let get_binary field item =
   match List.Assoc.find item field with
   | Some {Ddb_base_t.b=Some bin} -> Ok bin
   | Some {b=None} ->
-     invalid_field field
+    invalid_field field
   | None ->
-     invalid_field field
+    invalid_field field
 
 let make_url region = function
   | None -> Uri.of_string ("http://dynamodb." ^
-                             region ^ ".amazonaws.com")
+                           region ^ ".amazonaws.com")
   | Some new_url -> Uri.of_string new_url
 
 let t_of_credentials ?url access_id secret_key region =

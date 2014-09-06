@@ -15,14 +15,14 @@ type condition =
 type query = (String.t * condition) List.t
 
 val exec: Ddb_system.t ->
-          ?attributes: Ddb_query_t.attribute_name List.t ->
-          ?consistent_read: Bool.t ->
-          ?exclusive_start_key: keys ->
-          ?index_name: String.t ->
-          ?query: query ->
-          ?limit: Int.t ->
-          ?return_consumed_capacity: Ddb_query_t.return_consumed_capacity ->
-          ?scan_index_forward: Bool.t ->
-          ?select: Ddb_query_t.select ->
-          String.t ->
-          (Ddb_system.t * Ddb_query_t.result, Exn.t) Deferred.Result.t
+  ?attributes: Ddb_query_t.attribute_name List.t ->
+  ?consistent_read: Bool.t ->
+  ?exclusive_start_key: keys ->
+  ?index_name: String.t ->
+  ?query: query ->
+  ?limit: Int.t ->
+  ?return_consumed_capacity: Ddb_query_t.return_consumed_capacity ->
+  ?scan_index_forward: Bool.t ->
+  ?select: Ddb_query_t.select ->
+  String.t ->
+  (Ddb_system.t * Ddb_query_t.result, Exn.t) Deferred.Result.t

@@ -7,11 +7,11 @@ type result = {message_md5:String.t;
 
 
 val exec: Sqs_system.t ->
-          ?delay_seconds:Int.t ->
-          queue_url:Uri.t ->
-          String.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t
+  ?delay_seconds:Int.t ->
+  queue_url:Uri.t ->
+  String.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t
 
 val name_exec: Sqs_system.t ->
-          ?delay_seconds:Int.t ->
-          queue_name:String.t ->
-          String.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t
+  ?delay_seconds:Int.t ->
+  queue_name:String.t ->
+  String.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t

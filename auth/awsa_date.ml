@@ -4,7 +4,7 @@ let now () =
   Unix.gmtime (Unix.time ())
 
 let of_string str =
-    Unix.strptime ~fmt:"%a, %d %b %Y %H:%M:%S GMT" str
+  Unix.strptime ~fmt:"%a, %d %b %Y %H:%M:%S GMT" str
 
 let to_string tm =
   Unix.strftime tm "%a, %d %b %Y %H:%M:%S GMT"

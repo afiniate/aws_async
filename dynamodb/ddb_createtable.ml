@@ -2,7 +2,7 @@ open Core.Std
 open Async.Std
 
 let exec sys
-         table =
+    table =
   let request_spec = Ddb_system.api_version ^ ".CreateTable" in
   let json = Ddb_createtable_j.string_of_table table in
   let open Deferred.Result in

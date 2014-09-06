@@ -99,7 +99,7 @@ let date_equals key values =
     [(string_of_key key, processed_values)])]
 
 let date_not_equals key values =
- let processed_values = format_times values in
+  let processed_values = format_times values in
   [(string_of_conditional `Date_not_equals,
     [(string_of_key key, processed_values)])]
 
@@ -125,7 +125,7 @@ let date_greater_than_equals key values =
 
 let bool key values =
   let processed_values = List.map ~f:(function | true -> "true" | false -> "false")
-                                  values in
+      values in
   [(string_of_conditional `Bool,
     [(string_of_key key, processed_values)])]
 
@@ -155,6 +155,6 @@ let arn_not_like key values =
 
 let null key values =
   let processed_values = List.map ~f:(function | true -> "true" | false -> "false")
-                                  values in
+      values in
   [(string_of_conditional `Null,
     [(string_of_key key, processed_values)])]

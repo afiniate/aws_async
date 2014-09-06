@@ -13,14 +13,14 @@ let parse_result xml_string =
   Ok {request_id = request_id}
 
 let exec sys
-         url =
+    url =
   let uri = url
             |> Sqs_util.add_standard_param ~name:"Action"
-                                           ~value:"DeleteQueue" in
+              ~value:"DeleteQueue" in
   Sqs_request.get sys.Sqs_system.auth "" uri
   >>= fun (auth, body) ->
   match parse_result body with
   | Ok response ->
-     return @@ Ok ({sys with auth}, response)
+    return @@ Ok ({sys with auth}, response)
   | Error err ->
-     return @@ Result.fail err
+    return @@ Result.fail err

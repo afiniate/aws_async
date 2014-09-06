@@ -1,7 +1,6 @@
 open Core.Std
 open Async.Std
 
-
 type return_attribute =
   | All
   | Approximate_first_receive_timestamp
@@ -30,27 +29,27 @@ val string_of_receipt_handle: receipt_handle -> String.t
 val receipt_handle_of_string: String.t -> receipt_handle
 
 val exec: Sqs_system.t ->
-          ?return_attributes:return_attribute List.t ->
-          ?max_number_of_messages:Int.t ->
-          ?visibility_timeout:Int.t ->
-          ?wait_time_seconds:Int.t ->
-          Uri.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t
+  ?return_attributes:return_attribute List.t ->
+  ?max_number_of_messages:Int.t ->
+  ?visibility_timeout:Int.t ->
+  ?wait_time_seconds:Int.t ->
+  Uri.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t
 
 val long_poll: Sqs_system.t ->
-               ?return_attributes:return_attribute List.t ->
-               ?max_number_of_messages:Int.t ->
-               ?visibility_timeout:Int.t ->
-               Uri.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t
+  ?return_attributes:return_attribute List.t ->
+  ?max_number_of_messages:Int.t ->
+  ?visibility_timeout:Int.t ->
+  Uri.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t
 
 val name_long_poll: Sqs_system.t ->
-                    ?return_attributes:return_attribute List.t ->
-                    ?max_number_of_messages:Int.t ->
-                    ?visibility_timeout:Int.t ->
-                    String.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t
+  ?return_attributes:return_attribute List.t ->
+  ?max_number_of_messages:Int.t ->
+  ?visibility_timeout:Int.t ->
+  String.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t
 
 val name_exec: Sqs_system.t ->
-               ?return_attributes:return_attribute List.t ->
-               ?max_number_of_messages:Int.t ->
-               ?visibility_timeout:Int.t ->
-               ?wait_time_seconds:Int.t ->
-               String.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t
+  ?return_attributes:return_attribute List.t ->
+  ?max_number_of_messages:Int.t ->
+  ?visibility_timeout:Int.t ->
+  ?wait_time_seconds:Int.t ->
+  String.t -> (Sqs_system.t * result, Exn.t) Deferred.Result.t

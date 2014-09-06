@@ -14,9 +14,9 @@ let uri_of_path path =
 
 let get_availability_zone () =
   (* The zone is the region name + a one character zone idenifier. We
-  mainly just split off that zoneidentifier. This will cause problems
-  if there are ever more than 26 zones and AWS starts using more
-  letters. However, when that happens we can switch to regexp. *)
+     mainly just split off that zoneidentifier. This will cause problems
+     if there are ever more than 26 zones and AWS starts using more
+     letters. However, when that happens we can switch to regexp. *)
   let open Deferred.Monad_infix in
   let path = "/meta-data/placement/availability-zone" in
   Cohttp_async.Client.get (uri_of_path path)
@@ -68,6 +68,6 @@ let get_user_data () =
     return @@ Ok response
   else
     return @@ Error (Err
-                      (Unavailable_user_data,
-                       (Sexp.to_string
-                          (Cohttp.Code.sexp_of_status_code status))))
+                       (Unavailable_user_data,
+                        (Sexp.to_string
+                           (Cohttp.Code.sexp_of_status_code status))))
