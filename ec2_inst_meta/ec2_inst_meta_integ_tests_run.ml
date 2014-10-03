@@ -10,6 +10,6 @@ let test () =
     return ()
 
 let _ =
-  Command.async ~summary:"System tests for Aws_inst_meta"
+  Command.async ~summary:"Integration tests for Aws_inst_meta"
     Command.Spec.empty test
   |> Command.run
