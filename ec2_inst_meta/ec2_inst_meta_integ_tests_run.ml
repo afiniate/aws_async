@@ -9,7 +9,7 @@ let test () =
   | Ok _ -> print_string "test passed!\n";
     return ()
 
-let _ =
+let () =
   Command.async ~summary:"Integration tests for Aws_inst_meta"
     Command.Spec.empty test
   |> Command.run

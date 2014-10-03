@@ -14,7 +14,7 @@ let rec execute_async_tests tests =
         | Error ex ->
           raise ex)
 
-let _ =
+let () =
   print_string "Starting async tests ...\n";
   print_newline ();
   ignore @@ (execute_async_tests Aws_auth_tests.tests
