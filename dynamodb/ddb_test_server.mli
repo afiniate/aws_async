@@ -2,7 +2,7 @@ open Core.Std
 open Async.Std
 
 val start : Unit.t -> Unit.t Deferred.t
-(** Ensures the test db server is started *)
+(** Ensures the test db server is started and responding to queries *)
 
 val stop : Unit.t -> Unit.t Deferred.t
 (** Ensures the test db server is stopped *)
