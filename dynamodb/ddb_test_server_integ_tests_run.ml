@@ -37,10 +37,7 @@ let test_with_test_server running =
   Ddb_test_server.with_test_server
     (fun () -> assert_state "with_test_server" true)
 
-  (* TODO fix stop so that it waits until the state is actually stopped *)
-  >>= fun result_from_within -> after (Time.Span.of_sec 0.5)
-  >>= fun _ -> assert_state "with_test_server cleanup" false
-
+  >>= fun result_from_within -> assert_state "with_test_server cleanup" false
   >>|? fun _ -> result_from_within
 
 let tests () =
