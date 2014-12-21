@@ -10,12 +10,13 @@ let manage cmd =
 
 let ignore_output _ = return ()
 
-(* Parameters for the test local dynamodb server, it doesn't check
-   any authorisation values, so we just make them obviously made up *)
-let test_url = "http://localhost:53321"
-let test_access_id = "fake access id"
-let test_secret_key = "fake secret key"
-let test_region = "fake region"
+(* The local dynamodb server doesn't check the credentials as long as they are
+   the same all the time, thus we just make them obviously fake and export them
+   so that all the usages are coherent *)
+let url = "http://localhost:53321"
+let access_id = "fake access id"
+let secret_key = "fake secret key"
+let region = "fake region"
 
 let rec repeat_until wait_period condition =
   condition ()
@@ -34,7 +35,7 @@ let repeat_until_with_timeout timeout wait_period condition =
 (* Send an arbitrary command to verify the server is up and running *)
 let ping () =
   let dynamodb = Aws.Dynamodb.t_of_credentials
-      ~url:test_url test_access_id test_secret_key test_region in
+      ~url:url access_id secret_key region in
   try_with @@ Aws.Dynamodb.Listtables.exec ~limit:1 dynamodb
   >>| function
   | Ok _ -> true
