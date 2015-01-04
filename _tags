@@ -1,6 +1,6 @@
-<*.atd>: std_json
+".git": -traverse
+".git": not_hygienic
 
-<auth>: include
-<dynamodb>: include
-<sqs>: include
-<ec2_inst_meta>: include
+true: warn_error_A, warn(-40)
+
+<src>: include
