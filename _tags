@@ -3,4 +3,4 @@
 
 true: warn_error_A, warn(-40)
 
-<src>: include
+<lib>: include
