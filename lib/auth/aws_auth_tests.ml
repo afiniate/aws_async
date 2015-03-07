@@ -5,7 +5,7 @@ open Deferred.Result
 
 let service = "host"
 
-let sys = Aws.Auth.t_of_credentials "AKIDEXAMPLE"
+let sys = Aws_async.Auth.t_of_credentials "AKIDEXAMPLE"
     "wJalrXUtnFEMI/K7MDENG+bPxRfiCYEXAMPLEKEY"
     "us-east-1"
 
@@ -16,7 +16,7 @@ let get_header_key_duplicate _ =
                  ("zoo", "foobar");
                  ("zoo", "zoobar")] in
   let uri = Uri.of_string "http://host.foo.com/" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("DATE", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("host", "host.foo.com");
@@ -35,7 +35,7 @@ let get_header_value_order _ =
                  ("p", "p");
                  ("p", "a")] in
   let uri = Uri.of_string "http://host.foo.com/" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("DATE", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("host", "host.foo.com");
@@ -52,7 +52,7 @@ let get_header_value_trim _ =
                  ("host", "host.foo.com");
                  ("p", "phfft ")] in
   let uri = Uri.of_string "http://host.foo.com/" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("DATE", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("host", "host.foo.com");
@@ -65,7 +65,7 @@ let get_relative_relative _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/foo/bar/../.." in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -77,7 +77,7 @@ let get_relative _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/foo/.." in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -89,7 +89,7 @@ let slash_dot_slash _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/./" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -101,7 +101,7 @@ let slash_pointless_dot _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/./foo" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -113,7 +113,7 @@ let slash _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com//" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -125,7 +125,7 @@ let slashes _ =
   let headers = [("date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/foo/" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("host", "host.foo.com");
@@ -137,7 +137,7 @@ let space _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/ /foo" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -149,7 +149,7 @@ let unreserved _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/-._~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" in
-  Aws.Auth.v4_authorize sys service "GET"  uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET"  uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -161,7 +161,7 @@ let utf8 _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/%E1%88%B4" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -173,7 +173,7 @@ let vanilla_query_order_key_case _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/?foo=Zoo&foo=aha" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -185,7 +185,7 @@ let vanilla_query_order_key _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/?a=foo&b=foo" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -197,7 +197,7 @@ let vanilla_query_order_value _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/?foo=b&foo=a" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -209,7 +209,7 @@ let vanilla_query_unreserved _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/?-._~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz=-._~0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -221,7 +221,7 @@ let vanilla_query _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -233,7 +233,7 @@ let vanilla_utf8_query _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/?ሴ=bar" in
-  Aws.Auth.v4_authorize sys service "GET"  uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET"  uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -245,7 +245,7 @@ let vanilla_empty_query_key _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/?foo=bar" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -257,7 +257,7 @@ let vanilla _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/" in
-  Aws.Auth.v4_authorize sys service "GET" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "GET" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -269,7 +269,7 @@ let post_header_key_case _ =
   let headers = [("DATE", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("DATE", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("host", "host.foo.com");
@@ -282,7 +282,7 @@ let post_header_key_sort _ =
                  ("host", "host.foo.com");
                  ("ZOO", "zoobar")] in
   let uri = Uri.of_string "http://host.foo.com" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("DATE", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("host", "host.foo.com");
@@ -296,7 +296,7 @@ let post_header_value_case _ =
                  ("host", "host.foo.com");
                  ("zoo", "ZOOBAR")] in
   let uri = Uri.of_string "http://host.foo.com" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("DATE", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("host", "host.foo.com");
@@ -309,7 +309,7 @@ let post_vanilla_empty_query_value _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/?foo=bar" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -321,7 +321,7 @@ let post_vanilla_query_space _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/?f oo=b ar" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -333,7 +333,7 @@ let post_vanilla_query _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com/?foo=bar" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -345,7 +345,7 @@ let post_vanilla _ =
   let headers = [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers ""
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers ""
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                 ("Host", "host.foo.com");
@@ -359,7 +359,7 @@ let post_x_www_form_urlencoded_parameters _ =
                  ("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers "foo=bar"
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers "foo=bar"
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Content-Type",
                  "application/x-www-form-urlencoded; charset=utf8");
@@ -375,7 +375,7 @@ let post_x_www_form_urlencoded _ =
                  ("Date", "Mon, 09 Sep 2011 23:36:00 GMT");
                  ("Host", "host.foo.com")] in
   let uri = Uri.of_string "http://host.foo.com" in
-  Aws.Auth.v4_authorize sys service "POST" uri headers "foo=bar"
+  Aws_async.Auth.v4_authorize sys service "POST" uri headers "foo=bar"
   >>= fun (sys', authorized_headers) ->
   assert_equal [("Content-Type",
                  "application/x-www-form-urlencoded");

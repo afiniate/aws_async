@@ -34,9 +34,9 @@ let repeat_until_with_timeout timeout wait_period condition =
 
 (* Send an arbitrary command to verify the server is up and running *)
 let ping () =
-  let dynamodb = Aws.Dynamodb.t_of_credentials
+  let dynamodb = Aws_async.Dynamodb.t_of_credentials
       ~url:url access_id secret_key region in
-  try_with @@ Aws.Dynamodb.Listtables.exec ~limit:1 dynamodb
+  try_with @@ Aws_async.Dynamodb.Listtables.exec ~limit:1 dynamodb
   >>| function
   | Ok _ -> true
   | Error _ -> false

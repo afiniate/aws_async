@@ -16,9 +16,9 @@ let dummy_role_desc =
   ; expiration = "2014-09-20T22:34:27Z"
   }
 
-(* Instantiate a version of Aws.Ec2_inst_meta that doesn't need to run inside an
+(* Instantiate a version of Aws_async.Ec2_inst_meta that doesn't need to run inside an
    EC2 instance *)
-module Test_fetcher : Aws.Ec2_inst_meta.Fetcher = struct
+module Test_fetcher : Aws_async.Ec2_inst_meta.Fetcher = struct
 
   (* Simulate the credentials body that can be returned by AWS *)
   let credentials_json =
@@ -48,7 +48,7 @@ module Test_fetcher : Aws.Ec2_inst_meta.Fetcher = struct
     | _ -> Deferred.return @@ Error (TestFailed "this is fake for now")
 end
 
-module Test = Aws.Ec2_inst_meta.Make (Test_fetcher)
+module Test = Aws_async.Ec2_inst_meta.Make (Test_fetcher)
 
 (* Tests *)
 
@@ -63,7 +63,7 @@ let match_with match_string error_string result =
 (* This contains tests that are expected to behave the same whit the test
   instantiation of Ec2_inst_meta and the real production instantiation to avoid
   duplicating code in unit and system tests *)
-module Make_common (Ec2_inst_meta : Aws.Ec2_inst_meta.Api) = struct
+module Make_common (Ec2_inst_meta : Aws_async.Ec2_inst_meta.Api) = struct
 
   let get_user_data_test () =
     Ec2_inst_meta.get_user_data ()
@@ -107,7 +107,7 @@ end
 
 (* System tests are expected to run in the CI server and any devbox *)
 module System = struct
-  module Common = Make_common(Aws.Ec2_inst_meta)
+  module Common = Make_common(Aws_async.Ec2_inst_meta)
 
   (* For some tests we just want to check that they return something that is
      not an error *)
@@ -118,13 +118,13 @@ module System = struct
     >>|? ignore_result
 
   let get_region_test () =
-    Aws.Ec2_inst_meta.get_region ()
+    Aws_async.Ec2_inst_meta.get_region ()
     >>|? ignore_result
 
   (* Just check we get a successful result, actual JSON parsing is already
      tested by the unit tests *)
   let get_role_test () =
-    Aws.Ec2_inst_meta.get_role test_machine_role
+    Aws_async.Ec2_inst_meta.get_role test_machine_role
     >>|? (fun role_desc -> role_desc.Ec2im_iam_role_t.code)
     >>| match_with "Success" "get_role_test"
 
