@@ -2,5 +2,5 @@ true: syntax(camlp4o)
 <*.atd>: std_json
 
 <*>: thread, package(core), package(async), package(async_unix)
-<*>: package(threads), package(cohttp), package(cohttp.async)
+<*>: package(threads), package(cohttp), package(cohttp.async), package(base64)
 <*>: package(xmlm), package(atdgen), package(sexplib.syntax), package(sexplib)
