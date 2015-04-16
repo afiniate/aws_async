@@ -9,11 +9,11 @@ HOMEPAGE := "https://github.com/afiniate/aws_async"
 DEV_REPO := "git@github.com:afiniate/aws_async.git"
 BUG_REPORTS := "https://github.com/afiniate/aws_async/issues"
 
-DESC="Async based interface to AWS services"
+DESC_FILE=$(CURDIR)/description
 
 BUILD_DEPS := vrt
 DEPS=core async async_unix cohttp sexplib atdgen uri cryptokit \
-     async_shell xmlm
+     async_shell xmlm base64
 
 vrt.mk:
 	vrt prj gen-mk

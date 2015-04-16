@@ -44,8 +44,8 @@ let parse_response_metadata channel =
 
 let convert_string str = str
 
-let encode_message_body = Cohttp.Base64.encode
-let decode_message_body = Cohttp.Base64.decode
+let encode_message_body = B64.encode ~pad:true ?alphabet:None
+let decode_message_body = B64.decode ?alphabet:None
 
 let time_of_epoch_milli_string value =
   Time.of_float (Float.of_string value /. 1000.0)

@@ -1,0 +1,4 @@
+Async based interface to AWS services
+
+This provides an interface to aws based on Async. It currently
+supports Dynamodb and Sqs.
